@@ -1,5 +1,5 @@
 import os
-OUT="/mnt/project-files/fondsbasen/site"; BUY="https://buy.stripe.com/00weVd8muf0x3p12lv6Vq00"
+OUT="/mnt/project-files/fondsbasen/site"; BUY="https://buy.stripe.com/00weVd8muf0x3p12lv6Vq00"; BUY2="https://buy.stripe.com/4gM6oH5ai2dLe3Ff8h6Vq01"
 FONTS='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap">'
 F=[("Kommunens § 18-midler","Frivilligt socialt arbejde. Alle kommuner har en pulje.","social patient"),
 ("Kommunens folkeoplysningsmidler","Aktiviteter for børn og unge.","idraet born"),
@@ -29,10 +29,11 @@ def cards(cat=None):
     else: out='<div class="grid">'+out+'</div>'
     return out
 OFFER=f'''<section class="band" id="pakken"><div class="in offer">
-<div style="display:grid;gap:18px"><h2>Skriv ansøgningen på én aften</h2>
-<p>En konsulent tager 5.000-20.000 kr for en fondsansøgning. Ansøgningspakken giver jer den samme opskrift til en brøkdel af prisen.</p>
+<div style="display:grid;gap:18px"><h2>Få hjælp til ansøgningen</h2>
+<p>En konsulent tager 5.000-20.000 kr for en fondsansøgning. Vælg selv: skriv den med vores pakke, eller lad os skrive den for jer.</p>
 <ul class="list"><li>Skabelon med de 8 afsnit, næsten alle fonde spørger om</li><li>6 færdige AI-prompts, der skriver første udkast for jer</li><li>Budgetskabelon med eksempel</li><li>En færdig eksempelansøgning</li><li>De 10 fejl, der oftest giver afslag</li><li>Skabelon til afrapportering</li></ul></div>
-<div class="price"><p class="old">PDF · 13 sider · Hent med det samme</p><p class="big">199 kr</p><a class="btn" href="{BUY}">Køb Ansøgningspakken</a><p class="old">Sikker betaling via Stripe. Du får PDF'en med det samme.</p></div>
+<div style="display:grid;gap:16px"><div class="price" style="border-width:1.5px;border-color:var(--line)"><p class="old">Gør det selv · PDF · 13 sider</p><p class="big">199 kr</p><a class="btn ghost" href="{BUY}">Køb Ansøgningspakken</a><p class="old">Du får PDF'en med det samme.</p></div>
+<div class="price"><p class="old"><span class="mark">Mest populær</span> · Vi gør det for jer</p><p class="big">1.995 kr</p><p>Vi skriver hele ansøgningen til én fond ud fra jeres svar på 6 spørgsmål. Klar inden for 5 hverdage, med budget og 1 rettelsesrunde.</p><a class="btn" href="{BUY2}">Bestil ansøgningen</a><p class="old">En konsulent tager typisk 5.000-20.000 kr. Sikker betaling via Stripe.</p></div></div>
 </div></section>'''
 def page(fn,title,desc,body):
     html=f'''<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -107,5 +108,5 @@ import datetime
 urls=["","fonde-til-idraetsforeninger.html","fonde-til-patientforeninger.html","paragraf-18-midler.html","fonde-til-spejdere.html","fonde-til-boern-og-unge.html","hvordan-skriver-man-en-fondsansoegning.html","budget-til-fondsansoegning.html","fonde-til-kulturforeninger.html","fonde-mod-ensomhed.html","fonde-til-udstyr.html","afslag-paa-fondsansoegning.html","hvornaar-skal-man-soege-fonde.html"]
 base="https://augusthavsteen757-cpu.github.io/fondsbasen/"
 open(os.path.join(OUT,"sitemap.xml"),"w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+"".join(f"<url><loc>{base}{u}</loc><lastmod>2026-11-06</lastmod></url>" for u in urls)+"</urlset>\n")
-open(os.path.join(OUT,"robots.txt"),"w").write("User-agent: *\nAllow: /\nDisallow: /tak-94d54d6b2240.html\nSitemap: "+base+"sitemap.xml\n")
+open(os.path.join(OUT,"robots.txt"),"w").write("User-agent: *\nAllow: /\nDisallow: /tak-94d54d6b2240.html\nDisallow: /bestilt-7f3a91.html\nSitemap: "+base+"sitemap.xml\n")
 print("ok")

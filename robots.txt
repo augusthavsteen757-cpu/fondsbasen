@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /tak-94d54d6b2240.html
+Disallow: /bestilt-7f3a91.html
 Sitemap: https://augusthavsteen757-cpu.github.io/fondsbasen/sitemap.xml
