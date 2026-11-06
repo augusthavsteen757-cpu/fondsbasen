@@ -6,16 +6,16 @@ F=[("Kommunens § 18-midler","Frivilligt socialt arbejde. Alle kommuner har en p
 ("Nordea-fonden","Lokale projekter: sundhed, motion, natur, kultur.","idraet patient kultur"),
 ("Lokale og Anlægsfonden","Byggeri og faciliteter til idræt og fritid.","idraet"),
 ("Tuborgfondet","Fællesskaber for unge.","born kultur"),
-("Spar Nord Fonden","Lokale foreninger og projekter.","idraet kultur social"),
+("Spar Nord Fonden (10 til Forskel)","Typisk 10.000 kr til sociale formål i foreninger.","social"),
 ("Salling Fondene","Sport, kultur og lokale aktiviteter.","idraet kultur"),
 ("Augustinus Fonden","Kultur og sociale formål.","kultur social"),
 ("A.P. Møller Fonden","Lokalsamfund og kultur.","kultur"),
 ("Velux Fonden","Ældre og sociale projekter.","social"),
 ("Helsefonden","Sundhed og trivsel.","patient"),
-("Beckett-Fonden","Sundhed og forebyggelse.","patient"),
+("Beckett-Fonden","Kunst og kultur, sundhed og natur.","patient kultur"),
 ("TrygFonden","Tryghed, sundhed og førstehjælp.","patient social"),
-("Sygeforsikringen \"danmark\"s fond","Sundhedsfremmende projekter.","patient"),
-("Egmont Fonden","Børn og unge.","born"),
+("Sundhedsdonationer fra Sygeforsikringen \"danmark\"","Forebyggelse og sundhedsoplysning. Er ofte lukket for ansøgninger, så tjek først.","patient"),
+("Egmont Fonden","Børn og unge. Start med en kort forespørgsel.","born"),
 ("Lauritzen Fonden","Børn og unge i udsatte positioner.","born social"),
 ("Friluftsrådets udlodningsmidler","Friluftsliv og natur.","idraet"),
 ("DIF og DGI Foreningspuljen","Idrætsforeninger.","idraet"),
@@ -30,10 +30,10 @@ def cards(cat=None):
     return out
 OFFER=f'''<section class="band" id="pakken"><div class="in offer">
 <div style="display:grid;gap:18px"><h2>Få hjælp til ansøgningen</h2>
-<p>En konsulent tager 5.000-20.000 kr for en fondsansøgning. Vælg selv: skriv den med vores pakke, eller lad os skrive den for jer.</p>
+<p>Det kan koste flere tusinde kroner at få en konsulent til at skrive en fondsansøgning. Vælg selv: skriv den med vores pakke, eller lad os skrive den for jer.</p>
 <ul class="list"><li>Skabelon med de 8 afsnit, næsten alle fonde spørger om</li><li>6 færdige AI-prompts, der skriver første udkast for jer</li><li>Budgetskabelon med eksempel</li><li>En færdig eksempelansøgning</li><li>De 10 fejl, der oftest giver afslag</li><li>Skabelon til afrapportering</li></ul></div>
 <div style="display:grid;gap:16px"><div class="price" style="border-width:1.5px;border-color:var(--line)"><p class="old">Gør det selv · PDF · 13 sider</p><p class="big">199 kr</p><a class="btn ghost" href="{BUY}">Køb Ansøgningspakken</a><p class="old">Du får PDF'en med det samme.</p></div>
-<div class="price"><p class="old"><span class="mark">Vi gør det for jer</span></p><p class="big">1.995 kr</p><p>Vi skriver hele ansøgningen til én fond ud fra jeres svar på 6 spørgsmål. Klar inden for 5 hverdage, med budget og 1 rettelsesrunde.</p><a class="btn" href="{BUY2}">Bestil ansøgningen</a><p class="old">En konsulent tager typisk 5.000-20.000 kr. Sikker betaling via Stripe.</p></div></div>
+<div class="price"><p class="old"><span class="mark">Vi gør det for jer</span></p><p class="big">1.995 kr</p><p>Vi skriver hele ansøgningen til én fond ud fra jeres svar på 6 spørgsmål. Klar inden for 5 hverdage, med budget og 1 rettelsesrunde.</p><a class="btn" href="{BUY2}">Bestil ansøgningen</a><p class="old">Sikker betaling via Stripe.</p></div></div>
 </div></section>'''
 def page(fn,title,desc,body):
     html=f'''<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -98,7 +98,7 @@ guide("fonde-til-kulturforeninger.html","Fonde til kulturforeninger: musik, teat
 guide("fonde-mod-ensomhed.html","Fonde til projekter mod ensomhed | Fondsbasen","Hvilke fonde støtter foreningers projekter mod ensomhed? Besøgsvenner, caféer, netværk og fællesspisning.","Fonde til projekter mod ensomhed","Ensomhed er et af de områder, mange fonde og kommuner prioriterer. Her er de mest relevante muligheder for små foreninger.","social",
 "<h2>Projekter der ofte får støtte</h2><ul><li>Besøgsvenner og gåvenner</li><li>Fællesspisning og caféer</li><li>Netværk for pårørende, enker og enkemænd eller nytilflyttere</li><li>Aktiviteter på tværs af generationer</li></ul><p>Kommunens § 18-midler er det oplagte første sted at søge. Læs vores <a href=\"paragraf-18-midler.html\">guide til § 18-midler</a>.</p><h2>Sådan viser I effekt</h2><p>Brug et kort spørgeskema før og efter, fx: \"Hvor ofte føler du dig ensom?\" Tal overbeviser fonde mere end ord.</p>")
 guide("fonde-til-udstyr.html","Fonde til udstyr til foreninger | Fondsbasen","Sådan søger din forening penge til udstyr: hvilke fonde, hvad de kræver, og hvordan I skriver ansøgningen.","Fonde til udstyr","Mange foreninger mangler penge til ting: bolde, telte, instrumenter eller en ny computer. Det kan godt lade sig gøre at få støtte, hvis I fortæller det rigtigt.",None,
-"<h2>Fortæl hvad udstyret gør muligt</h2><p>Fonde giver sjældent penge til ting i sig selv. De giver penge til det, tingene gør muligt. Skriv derfor ikke \"vi mangler 10 telte\", men \"10 nye telte gør det muligt at tage 40 børn med på sommerlejr\".</p><h2>Fonde der ofte støtter udstyr</h2><ul><li>Lokale sparekasse- og forsyningsfonde</li><li>Nordea-fonden og Spar Nord Fonden</li><li>DIF og DGI Foreningspuljen for idrætsforeninger</li><li>Friluftsrådet til friluftsudstyr</li></ul><h2>Husk i budgettet</h2><ul><li>Vedhæft et tilbud fra en leverandør</li><li>Skriv hvor længe udstyret holder</li><li>Skriv hvor det skal opbevares</li></ul>")
+"<h2>Fortæl hvad udstyret gør muligt</h2><p>Fonde giver sjældent penge til ting i sig selv. De giver penge til det, tingene gør muligt. Skriv derfor ikke \"vi mangler 10 telte\", men \"10 nye telte gør det muligt at tage 40 børn med på sommerlejr\".</p><h2>Fonde der ofte støtter udstyr</h2><ul><li>Lokale sparekasse- og forsyningsfonde</li><li>Nordea-fonden og lokale sparekasse- og bankfonde</li><li>DIF og DGI Foreningspuljen for idrætsforeninger</li><li>Friluftsrådet til friluftsudstyr</li></ul><h2>Husk i budgettet</h2><ul><li>Vedhæft et tilbud fra en leverandør</li><li>Skriv hvor længe udstyret holder</li><li>Skriv hvor det skal opbevares</li></ul>")
 guide("afslag-paa-fondsansoegning.html","Afslag på fondsansøgning: hvad nu? | Fondsbasen","Fik jeres forening afslag på en fondsansøgning? Sådan finder I ud af hvorfor, og sådan står I stærkere næste gang.","Fik I afslag på jeres fondsansøgning?","Afslag er normalt. Selv gode ansøgninger bliver afvist, fordi fondene får langt flere ansøgninger, end de kan støtte.",None,
 "<h2>Gør dette inden for en uge</h2><ol><li><strong>Spørg hvorfor.</strong> Skriv en kort, venlig mail og spørg, hvad der kunne have gjort ansøgningen stærkere. Mange fonde svarer.</li><li><strong>Tjek om I matchede fonden.</strong> Læs fondens formål igen. Passede projektet virkelig?</li><li><strong>Søg et andet sted.</strong> Tilpas ansøgningen til en ny fond. Det meste af teksten kan genbruges.</li></ol><h2>De 5 hyppigste grunde til afslag</h2><ul><li>Projektet passer ikke til fondens formål</li><li>Ansøgningen mangler tal og konkrete mål</li><li>Budgettet er uklart</li><li>Der søges til drift i stedet for et afgrænset projekt</li><li>Projektet er allerede gået i gang</li></ul>")
 guide("hvornaar-skal-man-soege-fonde.html","Hvornår skal man søge fonde? Frister og planlægning | Fondsbasen","Sådan planlægger din forening fondsansøgninger over året: frister, hvor lang tid det tager, og hvornår I skal starte.","Hvornår skal man søge fonde?","Mange foreninger søger for sent. Her er en enkel plan, så I når fristerne.",None,
