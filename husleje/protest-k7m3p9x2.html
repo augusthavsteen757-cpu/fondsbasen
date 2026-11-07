@@ -1,0 +1,65 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap"><link rel="stylesheet" href="style.css">
+<title>Dit protestbrev – Huslejetjek</title>
+</head><body><header class="top"><div class="in"><a class="logo" href="./"><span>husleje<b>tjek</b></span></a><button class="btn sm ghost noprint" onclick="window.print()">Gem som PDF</button></div></header>
+<main>
+<section class="in sec noprint" style="max-width:760px">
+<p class="small"><span class="mark">Tak for dit køb</span></p>
+<h1>Lav dit protestbrev</h1>
+<p class="sub">Udfyld felterne. Brevet bliver lavet nederst på siden. Gem linket til denne side, så du kan vende tilbage.</p>
+<form id="f" style="display:grid;gap:14px">
+<label class="field"><span>Dit fulde navn</span><input type="text" name="navn" autocomplete="name"></label>
+<label class="field"><span>Boligens adresse</span><input type="text" name="adr" placeholder="Vej, nr., etage"></label>
+<label class="field"><span>Postnr. og by</span><input type="text" name="by"></label>
+<label class="field"><span>Telefon og e-mail</span><input type="text" name="kontakt"></label>
+<label class="field"><span>Udlejers navn (person eller firma)</span><input type="text" name="udl"></label>
+<label class="field"><span>Udlejers adresse eller e-mail</span><input type="text" name="udladr"></label>
+<label class="field"><span>Hvornår fik du varslingen?</span><input type="date" name="vdato"></label>
+<label class="field"><span>Hvad står der i varslingen, at lejen stiger med (kr pr. måned)?</span><input type="number" name="vbel" inputmode="numeric"></label>
+<label class="field"><span>Fra hvilken dato skal den nye leje gælde?</span><input type="date" name="fra"></label>
+<div class="opts">
+<label><input type="checkbox" name="dok" checked> <span>Bed udlejer om dokumentation for stigningen (fx budget eller regnskab)</span></label>
+<label><input type="checkbox" name="hoej"> <span>Jeg mener også, at min nuværende leje er for høj</span></label>
+</div>
+<label class="field"><span>Din begrundelse med egne ord (valgfrit)</span><textarea name="andet" placeholder="Fx at der ikke er lavet forbedringer, eller at varslingen ikke forklarer stigningen."></textarea></label>
+<button class="btn" type="button" id="mk">Lav mit brev</button>
+</form>
+</section>
+<div id="out"></div>
+</main>
+<footer><div class="in"><p>Huslejetjek drives af Klardal. Brevet er en skabelon lavet ud fra dine egne svar. Tjek, at alt er rigtigt, før du sender. Se <a href="vilkaar.html">vilkår</a>.</p></div></footer>
+<script>
+(function(){
+var f=document.getElementById('f'),K='huslejetjek-protest';
+function g(n){var e=f.elements[n];return e.type==='checkbox'?e.checked:e.value.trim()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function d(s){if(!s)return '[dato]';var p=s.split('-');return p[2]+'.'+p[1]+'.'+p[0]}
+function lang(dt){return dt.toLocaleDateString('da-DK',{day:'numeric',month:'long',year:'numeric'})}
+var N=['navn','adr','by','kontakt','udl','udladr','vdato','vbel','fra','dok','hoej','andet'];
+try{var s=JSON.parse(localStorage.getItem(K)||'null');if(s)N.forEach(function(k){var el=f.elements[k];if(!el||s[k]===undefined)return;if(el.type==='checkbox')el.checked=s[k];else el.value=s[k]})}catch(x){}
+document.getElementById('mk').addEventListener('click',function(){
+var a={};N.forEach(function(n){a[n]=g(n)});
+try{localStorage.setItem(K,JSON.stringify(a))}catch(x){}
+var idag=lang(new Date());
+var b=esc(a.navn)+'\n'+esc(a.adr)+'\n'+esc(a.by)+'\n'+esc(a.kontakt)+'\n\n'+esc(a.udl)+'\n'+esc(a.udladr)+'\n\n'+idag+'\n\n<b>Indsigelse mod varslet lejeforhøjelse</b>\n\nLejemål: '+esc(a.adr)+', '+esc(a.by)+'\n\n';
+b+='Jeg har den '+d(a.vdato)+' modtaget varsel om en lejeforhøjelse'+(a.vbel?' på '+Number(a.vbel).toLocaleString('da-DK')+' kr pr. måned':'')+(a.fra?' med virkning fra den '+d(a.fra):'')+'.\n\n';
+b+='Jeg gør hermed skriftlig indsigelse mod lejeforhøjelsen. Jeg godkender den ikke. Ønsker du at fastholde forhøjelsen, må du selv indbringe sagen for huslejenævnet.\n\n';
+if(a.dok)b+='Jeg beder dig samtidig sende mig dokumentation for grundlaget for forhøjelsen, fx budget, regnskab eller opgørelse over udgifter til forbedringer.\n\n';
+if(a.hoej)b+='Jeg gør desuden opmærksom på, at jeg mener, at min nuværende leje allerede er højere end tilladt. Jeg forbeholder mig ret til at kræve lejen nedsat og det for meget betalte tilbagebetalt.\n\n';
+if(a.andet)b+=esc(a.andet)+'\n\n';
+b+='Indtil sagen er afgjort, betaler jeg fortsat min nuværende leje.\n\nVenligst bekræft, at du har modtaget denne indsigelse.\n\nMed venlig hilsen\n\n\n'+esc(a.navn);
+var frist='';
+if(a.vdato){var vd=new Date(a.vdato);vd.setDate(vd.getDate()+42);frist='<li><b>Din frist:</b> Indsigelsen skal være kommet frem til udlejer senest 6 uger efter, du fik varslingen. Regn med en sidste frist omkring <b>'+lang(vd)+'</b>. Send brevet i dag.</li>'}
+var o=document.getElementById('out');
+o.innerHTML='<section class="in sec" style="max-width:860px"><div class="noprint row"><button class="btn" onclick="window.print()">Gem som PDF</button><span class="small">Vælg "Gem som PDF" i printvinduet.</span></div>'+
+'<div class="report"><h2>Sådan gør du</h2><ol class="steps">'+frist+
+'<li>Læs brevet igennem, og ret det, der ikke passer.</li>'+
+'<li>Send det, så du kan bevise det: på e-mail (gem den sendte mail) eller som anbefalet brev. Gem en kopi.</li>'+
+'<li>Bliv ved med at betale din nuværende husleje.</li>'+
+'<li>Vil udlejer fastholde stigningen, er det udlejer, der skal tage sagen til huslejenævnet.</li>'+
+(a.hoej?'<li>Mener du, at lejen i forvejen er for høj, kan du selv klage til huslejenævnet. Se <a href="./#pakke">klagepakken</a>.</li>':'')+
+'</ol></div><div class="report pagebreak"><p class="small">Protestbrev · til udlejer</p><div class="letter">'+b+'</div></div></section>';
+o.scrollIntoView({behavior:'smooth'});
+});
+})();
+</script>
+</body></html>
