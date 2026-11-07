@@ -1,0 +1,60 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700;800&display=swap"><link rel="stylesheet" href="style.css">
+<title>Kompetencepakken | AIbevis</title><meta name="robots" content="noindex,nofollow">
+</head><body><header class="top"><div class="in"><a class="logo" href="./">AI<b>bevis</b></a><a class="btn sm ghost" href="kursus.html">Tag kurset</a></div></header>
+<main class="in sec" style="max-width:860px">
+<div class="noprint prose"><p class="small"><span class="mark">Tak for jeres køb</span></p><h1>Kompetencepakken</h1>
+<p>Gem denne side som bogmærke. Udfyld felterne, tryk "Lav rapporten", og gem den som PDF. Rapporten indeholder jeres dokumentation for AI-færdigheder og jeres AI-politik. Felterne gemmes kun i denne browser.</p>
+<ol><li>Send linket til kurset til alle, der bruger AI: <a href="kursus.html" id="klink">kursus.html</a> <button class="btn sm ghost" id="cpk" type="button">Kopiér link</button></li><li>Bed dem sende dig deres bevis-link, når de har bestået.</li><li>Skriv deltagerne ind nedenfor og lav rapporten.</li></ol></div>
+
+<form id="f" class="noprint" style="display:grid;gap:14px;margin-top:24px">
+<label class="field"><span>Virksomhedens navn</span><input type="text" name="co" required></label>
+<label class="field"><span>CVR (valgfrit)</span><input type="text" name="cvr"></label>
+<label class="field"><span>Ansvarlig for AI (navn og rolle)</span><input type="text" name="ansv" placeholder="Fx Lone Jensen, direktør" required></label>
+<fieldset class="field" style="border:0;padding:0;margin:0"><span>Godkendte AI-værktøjer</span><div class="opts" id="tools"></div><input type="text" name="tool_other" placeholder="Andre værktøjer, adskilt af komma"></fieldset>
+<label class="field"><span>Hvad bruger I AI til? (kort)</span><textarea name="brug" placeholder="Fx udkast til mails og tilbud, opsummering af møder, tekster til hjemmesiden"></textarea></label>
+<label class="field"><span>Deltagere: én pr. linje som "Navn; dato; bevis-ID"</span><textarea name="ppl" placeholder="Mette Hansen; 2026-11-07; AIB-2026-K3J9QZ" style="min-height:160px"></textarea></label>
+<p class="small">Op til 25 medarbejdere er inkluderet i pakken.</p>
+<p><button class="btn" type="submit">Lav rapporten</button></p>
+</form>
+<div id="out" style="margin-top:28px"></div>
+<p class="noprint small" style="margin-top:16px">Spørgsmål? Skriv til augusthavsteen757@gmail.com med emnet "AIbevis".</p>
+</main><footer><div class="in"><p>AIbevis drives af Klardal. Indholdet er generel information om AI-forordningen og er ikke juridisk rådgivning.</p><p><a href="./">Forside</a> · <a href="kursus.html">Gratis kursus</a> · <a href="ai-act-krav-til-medarbejdere.html">AI Act-krav til medarbejdere</a> · <a href="ai-politik-skabelon.html">AI-politik skabelon</a> · <a href="partner.html">Partnerprogram</a></p></div></footer>
+<script>
+const T=["ChatGPT","Microsoft Copilot","Google Gemini","Claude","AI i Office/Google Workspace","AI-funktioner i regnskabs- eller CRM-system","Billedgeneratorer (fx Midjourney, DALL-E)"];
+document.getElementById('tools').innerHTML=T.map(t=>'<label><input type="checkbox" name="tool" value="'+t+'"> <span>'+t+'</span></label>').join('');
+const kl=new URL('kursus.html',location.href).href;document.getElementById('klink').href=kl;document.getElementById('klink').textContent=kl;
+document.getElementById('cpk').onclick=async e=>{try{await navigator.clipboard.writeText(kl);e.target.textContent='Kopieret';}catch(_){prompt('Kopiér:',kl);}};
+const f=document.getElementById('f');
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+try{const s=JSON.parse(localStorage.getItem('aibevis')||'null');if(s){for(const k of ['co','cvr','ansv','tool_other','brug','ppl'])if(s[k])f[k].value=s[k];(s.tools||[]).forEach(v=>{const b=f.querySelector('input[value="'+v+'"]');if(b)b.checked=true;});}}catch(_){}
+f.addEventListener('submit',e=>{e.preventDefault();
+const v={co:f.co.value.trim(),cvr:f.cvr.value.trim(),ansv:f.ansv.value.trim(),tool_other:f.tool_other.value.trim(),brug:f.brug.value.trim(),ppl:f.ppl.value.trim(),tools:[...f.querySelectorAll('input[name=tool]:checked')].map(x=>x.value)};
+try{localStorage.setItem('aibevis',JSON.stringify(v));}catch(_){}
+const tools=v.tools.concat(v.tool_other?v.tool_other.split(',').map(s=>s.trim()).filter(Boolean):[]);
+const rows=v.ppl.split('\n').map(l=>l.split(';').map(s=>s.trim())).filter(r=>r[0]).slice(0,25);
+const today=new Date().toLocaleDateString('da-DK',{day:'numeric',month:'long',year:'numeric'});
+const next=new Date();next.setFullYear(next.getFullYear()+1);const nx=next.toLocaleDateString('da-DK',{month:'long',year:'numeric'});
+const co=esc(v.co);
+document.getElementById('out').innerHTML='<div class="report">'+
+'<p class="small" style="color:#555">Dokumentationsrapport · AI-færdigheder · '+today+'</p>'+
+'<h2>'+co+(v.cvr?' <span style="font-weight:400;font-size:.6em">CVR '+esc(v.cvr)+'</span>':'')+'</h2>'+
+'<h3>1. Formål og grundlag</h3><p>Denne rapport dokumenterer de foranstaltninger, '+co+' har truffet for at understøtte medarbejdernes AI-færdigheder, jf. EU\'s AI-forordning (forordning 2024/1689) artikel 4. Ansvarlig for virksomhedens brug af AI: '+esc(v.ansv)+'.</p>'+
+'<h3>2. AI-værktøjer og anvendelse</h3><p><strong>Godkendte værktøjer:</strong> '+(tools.length?tools.map(esc).join(', '):'Ikke angivet')+'.</p><p><strong>Anvendelse:</strong> '+(v.brug?esc(v.brug):'Ikke angivet')+'.</p><p>Virksomheden bruger ikke AI til højrisikoformål som rekruttering, kreditvurdering eller vurdering af medarbejdere. Ændres det, vurderes behovet for yderligere træning og rådgivning, før det tages i brug.</p>'+
+'<h3>3. Træningens indhold</h3><p>Medarbejderne har gennemført kurset "AI-kompetencebevis" (ca. 30 minutter) og bestået en quiz med mindst 8 af 10 rigtige svar. Kurset dækker:</p><ul><li>Hvad AI og generativ AI er, og hvordan sprogmodeller virker</li><li>AI-forordningen: artikel 4, forbudte praksisser, højrisiko og gennemsigtighed, samt GDPR</li><li>Risici: hallucinationer, fortrolighed, bias, ophavsret og overtillid</li><li>Godt brug: kontekst, faktatjek, anonymisering og menneskelig kontrol</li><li>Regler på arbejdspladsen og hvordan fejl rapporteres</li></ul>'+
+'<h3>4. Deltagere</h3><div class="tablewrap"><table><tr><th>#</th><th>Navn</th><th>Dato</th><th>Bevis-ID</th></tr>'+(rows.length?rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(r[0])+'</td><td>'+esc(r[1]||'')+'</td><td>'+esc(r[2]||'')+'</td></tr>').join(''):'<tr><td colspan="4">Ingen deltagere angivet endnu</td></tr>')+'</table></div>'+
+'<h3>5. AI-politik for '+co+'</h3><ol>'+
+'<li><strong>Godkendte værktøjer.</strong> Medarbejdere må kun bruge de AI-værktøjer, der står i afsnit 2. Nye værktøjer godkendes af '+esc(v.ansv.split(',')[0])+' før brug.</li>'+
+'<li><strong>Data.</strong> Der må aldrig skrives personoplysninger (navne kombineret med andre oplysninger, CPR-numre, helbredsoplysninger), kundedata, kodeord eller fortrolige forretningsoplysninger ind i et AI-værktøj, medmindre værktøjet er godkendt til netop det. Anonymisér altid.</li>'+
+'<li><strong>Kontrol.</strong> Alt AI-genereret indhold, der sendes til kunder, offentliggøres eller bruges til beslutninger, gennemlæses og faktatjekkes af en medarbejder, som er ansvarlig for indholdet.</li>'+
+'<li><strong>Beslutninger om mennesker.</strong> AI må ikke alene træffe beslutninger om ansatte, ansøgere eller kunder.</li>'+
+'<li><strong>Åbenhed.</strong> Kunder skal vide det, når de kommunikerer med en AI-chatbot. Billeder, lyd og video skabt med AI, der kan forveksles med virkeligheden, mærkes.</li>'+
+'<li><strong>Ophavsret.</strong> AI-genererede billeder og tekster må ikke efterligne andres varemærker, logoer eller beskyttede værker.</li>'+
+'<li><strong>Fejl og hændelser.</strong> Har en medarbejder delt fortrolige data med et AI-værktøj, eller er en AI-fejl nået ud til en kunde, meldes det straks til den ansvarlige.</li>'+
+'<li><strong>Træning.</strong> Alle, der bruger AI i arbejdet, gennemfører kurset senest 30 dage efter ansættelse eller før de tager AI i brug.</li></ol>'+
+'<h3>6. Opfølgning</h3><ul><li>Nye medarbejdere gennemfører kurset ved opstart og tilføjes deltageroversigten.</li><li>Politikken og værktøjslisten gennemgås, når et nyt AI-værktøj tages i brug, og mindst én gang om året. Næste gennemgang: '+nx+'.</li></ul>'+
+'<p style="margin-top:28px">_______________________________<br>'+esc(v.ansv)+', '+co+'<br>Dato: '+today+'</p>'+
+'<p class="small" style="color:#666">Rapporten er udarbejdet med AIbevis. Den er generel dokumentation og ikke juridisk rådgivning.</p></div>'+
+'<p class="noprint" style="margin-top:16px"><button class="btn" onclick="print()">Gem som PDF / print</button></p>';
+document.getElementById('out').scrollIntoView({behavior:'smooth'});});
+</script>
+</body></html>
