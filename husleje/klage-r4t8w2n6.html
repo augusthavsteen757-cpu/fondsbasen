@@ -1,0 +1,98 @@
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700;800&display=swap"><link rel="stylesheet" href="style.css">
+<title>Din klagepakke – Huslejetjek</title>
+</head><body><header class="top"><div class="in"><a class="logo" href="./">Husleje<b>tjek</b></a><button class="btn sm ghost noprint" onclick="window.print()">Gem som PDF</button></div></header>
+<main>
+<section class="in sec noprint" style="max-width:760px">
+<p class="small"><span class="mark">Tak for dit køb</span></p>
+<h1>Lav din klage</h1>
+<p class="sub">Udfyld felterne. Dine breve bliver lavet nederst på siden. Gem dem som PDF, og send dem. Gem også linket til denne side, så du kan vende tilbage.</p>
+<form id="f" style="display:grid;gap:14px">
+<h2 style="margin-top:12px">Dig og boligen</h2>
+<label class="field"><span>Dit fulde navn</span><input type="text" name="navn" autocomplete="name"></label>
+<label class="field"><span>Boligens adresse</span><input type="text" name="adr" placeholder="Vej, nr., etage" autocomplete="street-address"></label>
+<label class="field"><span>Postnr. og by</span><input type="text" name="by" placeholder="2200 København N"></label>
+<label class="field"><span>Kommune</span><input type="text" name="kom" placeholder="København"></label>
+<label class="field"><span>Telefon og e-mail</span><input type="text" name="kontakt"></label>
+<label class="field"><span>Indflytningsdato</span><input type="date" name="ind"></label>
+<label class="field"><span>Er du flyttet? Skriv fraflytningsdato (ellers tomt)</span><input type="date" name="ud"></label>
+<label class="field"><span>Husleje pr. måned uden varme, vand og el (kr)</span><input type="number" name="leje" inputmode="numeric"></label>
+<label class="field"><span>Boligens størrelse (m²)</span><input type="number" name="m2" inputmode="numeric"></label>
+<label class="field"><span>Hvilken type ejendom?</span><select name="ejd"><option value="stor">Ældre ejendom med 7 eller flere lejligheder</option><option value="mod">Ældre ejendom med 7+ lejligheder, lejligheden var totalrenoveret ved indflytning</option><option value="lille">Ældre ejendom med 1-6 lejligheder (også udlejet ejer- eller andelslejlighed)</option><option value="fri">Nybyggeri taget i brug i 1992 eller senere</option><option value="vi">Ved ikke</option></select></label>
+<h2 style="margin-top:12px">Udlejer</h2>
+<label class="field"><span>Udlejers navn (person eller firma)</span><input type="text" name="udl"></label>
+<label class="field"><span>Udlejers adresse</span><input type="text" name="udladr"></label>
+<h2 style="margin-top:12px">Hvad vil du kræve?</h2>
+<div class="opts">
+<label><input type="checkbox" name="ned" checked> <span>At huslejen sættes ned fremover</span></label>
+<label><input type="checkbox" name="tilb" checked> <span>At jeg får det for meget betalte tilbage</span></label>
+<label><input type="checkbox" name="ind6"> <span>Jeg gør indsigelse mod en varslet lejeforhøjelse</span></label>
+<label><input type="checkbox" name="dok"> <span>Jeg har aldrig fået dokumentation for, hvad udlejer har brugt på renovering</span></label>
+</div>
+<div id="forhfelt" class="grid" hidden>
+<label class="field"><span>Dato for varslingen</span><input type="date" name="vdato"></label>
+<label class="field"><span>Varslet stigning (kr pr. måned)</span><input type="number" name="vbel" inputmode="numeric"></label>
+</div>
+<label class="field"><span>Andet nævnet skal vide (valgfrit)</span><textarea name="andet" placeholder="Fx at lejligheden har fugt, eller at lejen er meget højere end hos naboerne."></textarea></label>
+<button class="btn" type="button" id="mk">Lav mine breve</button>
+</form>
+</section>
+<div id="out"></div>
+</main>
+<footer><div class="in"><p>Huslejetjek drives af Klardal. Brevene er skabeloner lavet ud fra dine egne svar. Tjek, at alt er rigtigt, før du sender. Se <a href="vilkaar.html">vilkår</a>.</p></div></footer>
+<script>
+(function(){
+var f=document.getElementById('f'),K='huslejetjek-klage';
+function g(n){var e=f.elements[n];return e.type==='checkbox'?e.checked:e.value.trim()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function d(s){if(!s)return '';var p=s.split('-');return p[2]+'.'+p[1]+'.'+p[0]}
+function kr(x){return Math.round(x).toLocaleString('da-DK')}
+// prefill fra tjekket og tidligere udfyldning
+try{var t=JSON.parse(localStorage.getItem('huslejetjek')||'null');if(t){if(t.leje)f.elements.leje.value=t.leje;if(t.m2)f.elements.m2.value=t.m2;if(t.kom)f.elements.kom.value=t.kom;
+var e=t.aar==='e92'?'fri':(t.str==='lille'||t.type==='ejer')?'lille':(t.str==='stor'&&t.mod==='ja')?'mod':t.str==='stor'?'stor':'vi';f.elements.ejd.value=e;if(t.forh==='ja')f.elements.ind6.checked=true}}catch(x){}
+try{var s=JSON.parse(localStorage.getItem(K)||'null');if(s)Object.keys(s).forEach(function(k){var el=f.elements[k];if(!el)return;if(el.type==='checkbox')el.checked=s[k];else el.value=s[k]})}catch(x){}
+function tog(){document.getElementById('forhfelt').hidden=!f.elements.ind6.checked}
+f.elements.ind6.addEventListener('change',tog);tog();
+document.getElementById('mk').addEventListener('click',function(){
+var a={};['navn','adr','by','kom','kontakt','ind','ud','leje','m2','ejd','udl','udladr','ned','tilb','ind6','dok','vdato','vbel','andet'].forEach(function(n){a[n]=g(n)});
+try{localStorage.setItem(K,JSON.stringify(a))}catch(x){}
+var miss=[];if(!a.navn)miss.push('dit navn');if(!a.adr)miss.push('boligens adresse');if(!a.kom)miss.push('kommune');if(!a.udl)miss.push('udlejers navn');if(!a.leje)miss.push('husleje');if(!a.m2)miss.push('m²');
+if(a.ind6&&!a.vdato)miss.push('dato for varslingen');
+var o=document.getElementById('out');
+if(miss.length){o.innerHTML='<div class="in" style="max-width:760px;padding-bottom:30px"><div class="result bad"><p>Udfyld først: '+miss.join(', ')+'.</p></div></div>';o.scrollIntoView({behavior:'smooth'});return}
+var pm=a.leje*12/a.m2,idag=new Date().toLocaleDateString('da-DK',{day:'numeric',month:'long',year:'numeric'});
+var regel={stor:'Ejendommen er en ældre ejendom med 7 eller flere beboelseslejligheder. Lejen skal derfor som udgangspunkt fastsættes som omkostningsbestemt leje efter lejelovens § 19, stk. 1. Jeg mener, at den aftalte leje overstiger, hvad der kan opkræves efter disse regler.',
+mod:'Udlejer har fastsat lejen ud fra, at lejligheden er gennemgribende forbedret (lejelovens § 19, stk. 2). Jeg beder nævnet om at undersøge, om betingelserne for at fastsætte lejen på den måde er opfyldt, herunder om udgifterne til forbedringerne opfylder lovens beløbsgrænse, og om de er dokumenteret. Er betingelserne ikke opfyldt, skal lejen fastsættes som omkostningsbestemt leje.',
+lille:'Ejendommen havde pr. 1. januar 1995 højst 6 beboelseslejligheder. Lejen må derfor efter lejelovens § 32 ikke være væsentligt højere end lejen for tilsvarende lejemål, hvor lejen er omkostningsbestemt. Jeg mener, at lejen er væsentligt højere.',
+fri:'Jeg er opmærksom på, at ejendommen kan være omfattet af reglerne om fri leje. Jeg beder alligevel nævnet om at vurdere, om lejen er fastsat i overensstemmelse med loven, og om betingelserne for fri leje er opfyldt.',
+vi:'Jeg kender ikke ejendommens nøjagtige alder og antal lejligheder. Jeg beder nævnet om at fastslå, hvilke regler lejen skal fastsættes efter, og om den aftalte leje overstiger, hvad der lovligt kan opkræves.'}[a.ejd];
+var krav=[];if(a.ned)krav.push('at lejen nedsættes til det beløb, der lovligt kan opkræves');if(a.tilb)krav.push('at udlejer tilbagebetaler den leje, jeg har betalt for meget');if(a.ind6)krav.push('at den lejeforhøjelse, der blev varslet den '+d(a.vdato)+(a.vbel?' (ca. '+kr(+a.vbel)+' kr pr. måned)':'')+', tilsidesættes helt eller delvis');
+var lst=function(arr){return arr.map(function(x,i){return (i+1)+'. '+x[0].toUpperCase()+x.slice(1)}).join('\n')};
+var hoved=esc(a.navn)+'\n'+esc(a.adr)+'\n'+esc(a.by)+(a.kontakt?'\n'+esc(a.kontakt):'');
+var lejem='Lejemål: '+esc(a.adr)+', '+esc(a.by)+'\nIndflytning: '+(d(a.ind)||'[indsæt dato]')+(a.ud?'\nFraflytning: '+d(a.ud):'')+'\nNuværende leje: '+kr(+a.leje)+' kr pr. måned uden forbrug ('+kr(pm)+' kr pr. m² om året)\nAreal: '+esc(a.m2)+' m²';
+// brev 1
+var b1=hoved+'\n\n'+esc(a.udl)+'\n'+esc(a.udladr)+'\n\n'+idag+'\n\n<b>'+(a.ind6?'Indsigelse mod lejeforhøjelse og krav om nedsættelse af lejen':'Krav om nedsættelse af lejen')+'</b>\n\n'+lejem+'\n\n';
+if(a.ind6)b1+='Jeg gør hermed skriftlig indsigelse mod den lejeforhøjelse, som jeg modtog varsel om den '+d(a.vdato)+'. Jeg kan ikke godkende forhøjelsen, fordi jeg mener, at lejen allerede er højere end tilladt, og at forhøjelsen derfor ikke kan gennemføres. Ønsker du at fastholde forhøjelsen, skal du selv indbringe sagen for huslejenævnet.\n\n';
+b1+=regel.replace('Jeg beder nævnet om','Jeg beder dig om').replace('Jeg beder alligevel nævnet om','Jeg beder dig om')+'\n\nJeg kræver derfor:\n'+lst(krav.filter(function(k){return k.indexOf('tilsidesættes')<0}).length?krav.filter(function(k){return k.indexOf('tilsidesættes')<0}):['at lejen fastsættes i overensstemmelse med loven'])+'\n\n';
+if(a.dok)b1+='Jeg beder dig samtidig sende mig dokumentation for de udgifter til forbedringer, som lejen er fastsat ud fra.\n\n';
+b1+='Jeg beder om dit svar inden 14 dage. Hører jeg ikke fra dig, eller kan vi ikke blive enige, indbringer jeg sagen for huslejenævnet.\n\nMed venlig hilsen\n\n\n'+esc(a.navn);
+// brev 2
+var b2=hoved+'\n\nHuslejenævnet i '+esc(a.kom)+' Kommune\n\n'+idag+'\n\n<b>Klage over lejens størrelse</b>\n\nKlager (lejer): '+esc(a.navn)+', '+esc(a.adr)+', '+esc(a.by)+'\nIndklagede (udlejer): '+esc(a.udl)+', '+esc(a.udladr)+'\n\n'+lejem+'\n\n<b>Hvad nævnet skal tage stilling til</b>\nJeg beder nævnet om at træffe afgørelse om:\n'+lst(krav.length?krav:['at lejen fastsættes i overensstemmelse med loven'])+'\n\n<b>Begrundelse</b>\n'+regel+'\n\nMin leje svarer til '+kr(pm)+' kr pr. m² om året uden forbrug.'+(a.dok?' Jeg har ikke modtaget dokumentation for udlejers udgifter til forbedringer af lejemålet.':'')+(a.ind6?' Jeg har rettidigt gjort skriftlig indsigelse mod den lejeforhøjelse, der blev varslet den '+d(a.vdato)+'.':'')+(a.andet?'\n\n'+esc(a.andet):'')+'\n\nJeg har skrevet til udlejer og bedt om at få lejen nedsat, men vi er ikke blevet enige.\n\n<b>Bilag</b>\n1. Lejekontrakten (alle sider, inkl. tillæg)\n2. Mit brev til udlejer og eventuelt svar\n'+(a.ind6?'3. Varslingen af lejeforhøjelsen og min indsigelse\n4. Kvittering for betaling af gebyr til nævnet':'3. Kvittering for betaling af gebyr til nævnet')+'\n\nMed venlig hilsen\n\n\n'+esc(a.navn);
+var frist='';
+if(a.ind6){var vd=new Date(a.vdato);vd.setDate(vd.getDate()+42);frist='<li><b>Indsigelsen haster.</b> Udlejer skal have din indsigelse senest 6 uger efter, du fik varslingen. Regn med en sidste frist omkring <b>'+vd.toLocaleDateString('da-DK',{day:'numeric',month:'long',year:'numeric'})+'</b>. Send brev 1 i dag, og gem bevis for, at det er sendt (fx e-mail eller anbefalet brev).</li>'}
+if(a.ud){var ud=new Date(a.ud);ud.setFullYear(ud.getFullYear()+1);frist+='<li><b>Du er flyttet.</b> Kravet skal være rejst for huslejenævnet inden 1 år fra fraflytningen, altså senest omkring <b>'+ud.toLocaleDateString('da-DK',{day:'numeric',month:'long',year:'numeric'})+'</b>.</li>'}
+o.innerHTML='<section class="in sec" style="max-width:860px"><div class="noprint row"><button class="btn" onclick="window.print()">Gem alt som PDF</button><span class="small">Vælg "Gem som PDF" i printvinduet.</span></div>'+
+'<div class="report"><h2>Sådan gør du</h2><ol class="steps">'+frist+
+'<li>Læs begge breve igennem, og ret det, der ikke passer.</li>'+
+'<li>Send <b>brev 1</b> til udlejer på e-mail eller som brev. Gem en kopi.</li>'+
+'<li>Venter du stadig efter 14 dage, eller siger udlejer nej, så send <b>brev 2</b> til huslejenævnet. Find dit nævn på <a href="https://www.borger.dk/bolig-og-flytning/Lejebolig/beboerklagenaevn-og-huslejenaevn">borger.dk</a> eller på din kommunes hjemmeside. Mange kommuner har en digital blanket, som du kan sætte teksten ind i.</li>'+
+'<li>Betal nævnets gebyr (367 kr i 2026) som beskrevet på kommunens side, og vedlæg kvitteringen.</li>'+
+'<li>Vedlæg lejekontrakten (alle sider) og dine breve.</li>'+
+'<li><b>Bliv ved med at betale din fulde husleje</b>, mens sagen kører. Ellers risikerer du at blive sat ud for manglende betaling.</li>'+
+'<li>Nævnet sender sagen til udlejer og træffer derefter en afgørelse. Det kan tage flere måneder.</li></ol></div>'+
+'<div class="report pagebreak"><p class="small">Brev 1 · til udlejer</p><div class="letter">'+b1+'</div></div>'+
+'<div class="report pagebreak"><p class="small">Brev 2 · til huslejenævnet</p><div class="letter">'+b2+'</div></div></section>';
+o.scrollIntoView({behavior:'smooth'});
+});
+})();
+</script>
+</body></html>
