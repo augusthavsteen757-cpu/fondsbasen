@@ -1,38 +1,62 @@
-<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap"><link rel="stylesheet" href="style.css">
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap"><link rel="stylesheet" href="style.css?v=3">
 <title>P-klagen – holder din p-afgift?</title>
 <meta name="description" content="Fået en kontrolafgift fra et privat parkeringsselskab? Tjek gratis, om den holder. Klagen koster 99 kr, og du får pengene tilbage, hvis selskabet siger nej.">
 </head><body>
-<header class="top"><div class="in"><a class="logo" href="./"><span>p-<b>klagen</b></span></a></div></header>
+<header class="top"><div class="in"><a class="logo" href="./"><span>p-klagen</span></a><a class="toplink" href="#pris">Pris</a></div></header>
 <main>
-<section class="in start" id="tjek">
-<h1>Fik du en p-afgift?<br><span>Lad os se, om den holder.</span></h1>
-<div class="wiz">
+<section class="hero"><div class="in">
+<p class="label" style="color:var(--ink)">Kontrolafgift fra et privat p-selskab</p>
+<h1>Holder din p-afgift?</h1>
+<p class="sub">Svar på 7 korte spørgsmål. Det er gratis og tager et minut.</p>
+</div></section>
+
+<section class="in tool" id="tjek"><div class="card"><div class="wiz">
 <div class="prog" id="prog"></div>
 <div id="wiz"></div>
-<div id="res" hidden></div>
+<div id="res" class="result" hidden></div>
+</div></div></section>
+
+<section class="in sec">
+<h2>Sådan virker det</h2>
+<div class="steps3">
+<div><h3>Tjek gratis</h3><p class="small">Du får at vide, om afgiften holder, og hvorfor.</p></div>
+<div><h3>Upload afgiften</h3><p class="small">Tag et billede af sedlen eller brevet. Vi udfylder felterne for dig.</p></div>
+<div><h3>Send klagen</h3><p class="small">Du får klagen og det præcise link til selskabets klageformular.</p></div>
 </div>
 </section>
 
-<section class="in plain" id="pris">
+<section class="in sec" id="pris"><div class="buy">
+<div style="display:grid;gap:14px">
 <h2>Klagen koster 99 kr</h2>
-<p>Du svarer på et par spørgsmål om afgiften. Så får du en klage til parkeringsselskabet, som du kan sende med det samme. Siger selskabet nej, får du også klagen til Parkeringsklagenævnet og et svar til inkasso, hvis de begynder at rykke.</p>
-<p>Siger selskabet nej, får du dine 99 kr tilbage. Du sender os bare deres afslag.</p>
-<label class="consent"><input type="checkbox" id="ok"> <span>Jeg har læst <a href="vilkaar.html">vilkårene</a> og vil have klagen med det samme. Jeg ved, at fortrydelsesretten så bortfalder. Garantien gælder stadig.</span></label>
-<div class="row"><a class="btn" id="buy" href="vilkaar.html" aria-disabled="true">Køb klagen</a></div>
-</section>
+<p>Klagen bygger på reglerne for kontrolafgifter og på de domme, Parkeringsklagenævnet selv henviser til. Det er gratis at sende den til selskabet.</p>
+<div class="guar"><b>Pengene tilbage</b><span>Siger selskabet nej, får du dine 99 kr tilbage. Du sender os bare deres afslag.</span></div>
+</div>
+<div class="receipt">
+<span class="label">P-klagen</span>
+<span class="big">99 kr</span>
+<ul>
+<li>Klage til parkeringsselskabet</li>
+<li>Klage til Parkeringsklagenævnet, hvis de siger nej</li>
+<li>Svar til inkasso, hvis de begynder at rykke</li>
+<li>Præcise links til, hvor du sender det</li>
+</ul>
+<label class="consent"><input type="checkbox" id="ok"> <span>Jeg har læst <a href="vilkaar.html">vilkårene</a> og vil have klagen med det samme. Fortrydelsesretten bortfalder, men garantien gælder stadig.</span></label>
+<a class="btn" id="buy" href="vilkaar.html" aria-disabled="true">Køb klagen</a>
+</div>
+</div></section>
 
-<section class="in plain">
+<section class="in sec">
 <h2>Godt at vide</h2>
-<dl class="kv">
-<dt>Kom afgiften med posten?</dt><dd>Siden 1. juli 2025 skal afgiften sidde på bilen eller gives til dig. En afgift, der kun er sendt bagefter, kan som udgangspunkt ikke kræves betalt. <a href="p-afgift-sendt-med-posten.html">Læs mere</a></dd>
-<dt>Koster det noget at klage?</dt><dd>Nej, ikke til selskabet. Kun hvis du går videre til <a href="parkeringsklagenaevnet.html">Parkeringsklagenævnet</a>, koster det 175 kr. Dem får du tilbage, hvis du vinder.</dd>
-<dt>Kommunen eller politiet?</dt><dd>Så gælder andre regler, og du skal klage direkte til dem. Det her er kun til private p-selskaber.</dd>
-<dt>Er I advokater?</dt><dd>Nej. Klagen bygger på dine svar og på reglerne. Vi kan ikke love, at du vinder, og derfor har vi garantien.</dd>
-</dl>
+<div class="faq">
+<details><summary>Kom afgiften med posten?</summary><p>Siden 1. juli 2025 skal afgiften sidde på bilen eller gives til dig. En afgift, der kun er sendt bagefter, kan som udgangspunkt ikke kræves betalt. <a href="p-afgift-sendt-med-posten.html">Læs mere</a></p></details>
+<details><summary>Koster det noget at klage?</summary><p>Nej, ikke til selskabet. Kun hvis du går videre til <a href="parkeringsklagenaevnet.html">Parkeringsklagenævnet</a>, koster det 175 kr. Dem får du tilbage, hvis du vinder.</p></details>
+<details><summary>Hvad med kommunen eller politiet?</summary><p>Så gælder andre regler, og du skal klage direkte til dem. P-klagen er kun til private p-selskaber.</p></details>
+<details><summary>Er I advokater?</summary><p>Nej. Klagen bygger på dine svar og på reglerne. Vi kan ikke love, at du vinder, og derfor har vi garantien.</p></details>
+</div>
 </section>
 </main>
 <footer><div class="in"><p>P-klagen drives af Klardal. <a href="klage-over-p-afgift.html">Klag over p-afgift</a> · <a href="vilkaar.html">Vilkår</a></p></div></footer>
-<script src="tjek.js"></script>
+<script src="tjek.js?v=3"></script>
 <script>
 var BUY='https://buy.stripe.com/3cI3cvfOW8C94t5d096Vq05';
 var ok=document.getElementById('ok'),buy=document.getElementById('buy');
