@@ -134,3 +134,7 @@ footer .in{display:grid;gap:8px}
 @media print{header.top,footer,.noprint{display:none!important}body{background:#fff}.report{box-shadow:none;max-width:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 .sub{font-size:1.1rem;color:var(--muted);max-width:60ch}.hero .sub{color:var(--ink)}
+.snap{display:grid;gap:12px;justify-items:start}
+.snap h3{font-size:clamp(1.5rem,3.6vw,2.1rem);font-stretch:85%}
+.snap .btn{cursor:pointer}
+#readinfo{background:var(--soft);border-radius:10px;padding:10px 14px;color:var(--ink)}
