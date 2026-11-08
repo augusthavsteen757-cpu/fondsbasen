@@ -1,11 +1,11 @@
-<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="robots" content="noindex,nofollow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap"><link rel="stylesheet" href="style.css?v=4">
+<!doctype html><html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="robots" content="noindex,nofollow"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,700&display=swap"><link rel="stylesheet" href="style.css?v=6">
 <title>Din klage – P-klagen</title>
 </head><body><header class="top"><div class="in"><a class="logo" href="./"><span>p-klagen</span></a><button class="btn sm ghost noprint" onclick="window.print()">Gem som PDF</button></div></header>
 <main>
 <section class="in sec noprint" style="max-width:760px">
 <p class="small"><span class="mark">Tak for dit køb</span></p>
 <h1>Lav din klage</h1>
-<p class="sub">Upload et billede af afgiften, eller udfyld felterne selv. Din klage bliver lavet nederst på siden. Gem linket til siden, så du kan vende tilbage, hvis selskabet siger nej.</p>
+<p class="sub">Upload et billede af afgiften, eller udfyld felterne selv. Din klage bliver lavet nederst på siden. Når klagen er lavet, får du et personligt link, så du altid kan finde den igen.</p>
 <div class="drop"><b>Upload et billede af afgiften</b><span class="small" style="color:var(--ink)">Vi læser nummer, nummerplade, dato, beløb og selskab og udfylder felterne. Billedet bliver på din telefon og sendes ikke nogen steder hen.</span><input type="file" id="pic" accept="image/*"><span class="ocrstat" id="ocrstat" aria-live="polite"></span></div>
 <form id="f" style="display:grid;gap:14px">
 <h2 style="margin-top:12px">Dig</h2>
@@ -52,7 +52,7 @@
 </section>
 <div id="out"></div>
 </main>
-<script src="ocr.js?v=4"></script>
+<script src="ocr.js?v=5"></script>
 <footer><div class="in"><p>P-klagen drives af Klardal. Brevene er skabeloner lavet ud fra dine egne svar. Tjek, at alt er rigtigt, før du sender. Se <a href="vilkaar.html">vilkår</a>.</p></div></footer>
 <script>
 (function(){
@@ -80,6 +80,14 @@ try{var s=JSON.parse(localStorage.getItem(K)||'null');if(s)Object.keys(s).forEac
 try{if(t&&t.typ)setTyp(t.typ)}catch(x){}
 try{applyOCR(JSON.parse(localStorage.getItem('pklagen-ocr')||'null'),true)}catch(x){}
 togTyp();
+function enc(a){return btoa(unescape(encodeURIComponent(JSON.stringify(a)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function dec(t){t=t.replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(escape(atob(t))))}
+function addLink(a,o){var url=location.href.split('#')[0]+'#k='+enc(a);try{history.replaceState(null,'',url)}catch(x){}
+var box=document.createElement('div');box.className='savebox noprint';
+box.innerHTML='<b>Gem dit personlige link</b><span>Linket åbner præcis denne klage igen, også på en anden telefon eller computer. Gem det, så du har det, hvis selskabet siger nej.</span><input type="text" readonly value="'+esc(url)+'"><div class="row"><button class="btn sm" type="button">Kopiér linket</button><a class="btn sm ghost" href="mailto:?subject='+encodeURIComponent('Min p-klage')+'&body='+encodeURIComponent('Min klage over p-afgiften: '+url)+'">Send linket til mig selv</a></div>';
+var sec=o.querySelector('section');sec.insertBefore(box,sec.firstChild);
+var inp=box.querySelector('input'),b=box.querySelector('button');inp.onclick=function(){inp.select()};
+b.onclick=function(){function ok(){b.textContent='Kopieret'}if(navigator.clipboard)navigator.clipboard.writeText(url).then(ok,function(){inp.select();document.execCommand('copy');ok()});else{inp.select();document.execCommand('copy');ok()}}}
 document.getElementById('mk').addEventListener('click',function(){
 var a={};a.typ=(f.querySelector('input[name=typ]:checked')||{}).value||'priv';['navn','adr','by','kontakt','sel','kommune','nr','reg','dato','kl','sted','bel','egen','bevis'].concat(B).forEach(function(n){a[n]=g(n)});
 try{localStorage.setItem(K,JSON.stringify(a))}catch(x){}
@@ -127,7 +135,7 @@ o.innerHTML='<section class="in sec" style="max-width:860px"><div class="noprint
 '<li>Der findes ikke et klagenævn for kommunale p-afgifter. Fastholder kommunen afgiften, kan sagen kun prøves ved domstolene. Kontakt fx FDM, hvis du vil gå videre.</li>'+
 '<li><b>Pengene tilbage:</b> Fastholder kommunen afgiften, så send afgørelsen til <a href="mailto:augusthavsteen757@gmail.com?subject=P-klagen%20pengene%20tilbage">augusthavsteen757@gmail.com</a> inden 90 dage efter dit køb. Så får du dine 99 kr tilbage.</li>'+
 '</ol></div><div class="report pagebreak"><p class="small">Klage til '+esc(a.kommune)+' Kommune</p><div class="letter">'+kb+'</div></div></section>';
-o.scrollIntoView({behavior:'smooth'});return}
+addLink(a,o);o.scrollIntoView({behavior:'smooth'});return}
 var stark=a.post&&efter||a.betalt||a.ikketilm;
 o.innerHTML='<section class="in sec" style="max-width:860px"><div class="noprint row"><button class="btn" onclick="window.print()">Gem alt som PDF</button><span class="small">Vælg "Gem som PDF" i printvinduet.</span></div>'+
 '<div class="report"><h2>Sådan gør du</h2><ol class="steps">'+
@@ -141,8 +149,9 @@ o.innerHTML='<section class="in sec" style="max-width:860px"><div class="noprint
 '<div class="report pagebreak"><p class="small">Brev 1 · til '+esc(a.sel)+'</p><div class="letter">'+b1+'</div></div>'+
 '<div class="report pagebreak"><p class="small">Brev 2 · til Parkeringsklagenævnet, kun hvis selskabet siger nej · udfyld felterne i [klammer]</p><div class="letter">'+b2+'</div></div>'+
 '<div class="report pagebreak"><p class="small">Brev 3 · til inkasso, kun hvis du får rykkere</p><div class="letter">'+b3+'</div></div></section>';
-o.scrollIntoView({behavior:'smooth'});
+addLink(a,o);o.scrollIntoView({behavior:'smooth'});
 });
+try{var h=location.hash.match(/k=([\w-]+)/);if(h){var A0=dec(h[1]);Object.keys(A0).forEach(function(k){var el=f.elements[k];if(!el||!el.type||el.type==='radio')return;if(el.type==='checkbox')el.checked=!!A0[k];else el.value=A0[k]});setTyp(A0.typ||'priv');document.getElementById('mk').click()}}catch(x){}
 })();
 </script>
 </body></html>
