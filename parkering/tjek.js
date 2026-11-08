@@ -52,15 +52,7 @@ if(a.grund==='flere'){lvl=Math.max(lvl,2);sel.push('flere');why.push('Flere afgi
 if(a.grund==='tid'){sel.push('tid');why.push('Overskredet tid er svært at vinde på, medmindre skiltningen var utydelig, eller selskabet har regnet tiden forkert.')}
 if(a.hvor==='vi'||a.skilt==='vi'||a.seddel==='vi')why.push('Du svarede "ved ikke" på et spørgsmål. Kig på afgiften og skiltene igen. Det kan give dig et stærkere argument.')
 if(a.klaget==='afslag'||a.klaget==='intet')why.push('Du har allerede klaget til selskabet. Næste skridt er Parkeringsklagenævnet. Gebyret er 175 kr, og du får det tilbage, hvis du får medhold. Klagen til nævnet er med i pakken.')}
-var lab={'-1':'Det dækker vi ikke',1:'Svag sag',2:'Værd at klage',3:'Stærk sag'}[lvl];
-var out='<div class="verdict">'+(lvl>0?'<div class="meter l'+lvl+'"><i></i><i></i><i></i></div>':'')+'<span class="v">'+lab+'</span></div>';
-out+='<ul class="list">'+why.map(function(w){return '<li>'+w+'</li>'}).join('')+'</ul>';
-if(lvl>=2)out+='<div class="row"><a class="btn" href="#pris">Få klagen for 99 kr</a></div><p class="small">Pengene tilbage, hvis selskabet fastholder afgiften.</p>';
-else if(lvl===1)out+='<p class="small">Ud fra dine svar ser sagen svag ud, og vi anbefaler ikke, at du køber klagen. Har du billeder eller andet, der viser, at afgiften er forkert, kan det ændre billedet.</p>';
-out+='<p class="small">En vejledende vurdering ud fra reglerne i kontrolafgiftsbekendtgørelsen. <button class="back" type="button" id="again">Tag tjekket igen</button></p>';
-R.className='result '+(lvl>=2?'good':lvl<0?'bad':'');R.innerHTML=out;R.hidden=false;W.hidden=true;P.hidden=true;
-document.getElementById('again').onclick=function(){i=0;A={};AUTO={};R.hidden=true;W.hidden=false;P.hidden=false;draw()};
-a.grunde=sel;a.typ=a.hvem==='kom'?'kom':'priv';store('pklagen',a);R.scrollIntoView({behavior:'smooth',block:'start'});
+a.grunde=sel;a.typ=a.hvem==='kom'?'kom':'priv';a.lvl=lvl;a.why=why;store('pklagen',a);location.href='resultat.html';
 }
 var PH=document.getElementById('photo'),WZ=document.getElementById('wizbox'),ST=document.getElementById('ocrstat'),RD=document.getElementById('readinfo');
 function startWiz(){PH.hidden=true;WZ.hidden=false;i=0;if(!vis().length)return result();draw()}
