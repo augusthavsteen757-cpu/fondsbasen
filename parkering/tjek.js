@@ -5,7 +5,7 @@ var Q=[
 {id:'hvor',t:'Hvordan fik du den?',o:[['post','Den kom bagefter, med posten, i e-Boks eller på mail'],['bil','Den sad på bilen, eller en vagt gav mig den'],['vi','Kan ikke huske det']]},
 {id:'hvem',t:'Hvem er den fra?',o:[['priv','Et privat firma, fx Q-Park, Apcoa, Gardian eller ParkZone'],['kom','Kommunen'],['pol','Politiet']]},
 {id:'dato',t:'Hvilken dato parkerede du?',d:1},
-{id:'grund',t:'Hvad siger de, du har gjort?',o:[['betalt','Ikke betalt, men det havde jeg'],['skive','Manglende eller forkert p-skive'],['tid','Overskredet tid'],['till','Ingen tilladelse, men jeg havde en'],['andet','Noget andet']]},
+{id:'grund',t:'Hvad siger de, du har gjort?',o:[['betalt','Ikke betalt, men det havde jeg'],['skive','Manglende eller forkert p-skive'],['tid','Overskredet tid'],['till','Ingen tilladelse, men jeg havde en'],['gaest','Holdt der uden tilladelse, mens jeg hentede gæstekort'],['flere','Flere afgifter for samme parkering'],['andet','Noget andet']]},
 {id:'fejl',t:'Hvordan havde du betalt?',if:function(a){return a.grund==='betalt'},o:[['ok','Korrekt, og jeg har kvittering'],['taste','Jeg tastede forkert nummerplade eller zone'],['ingen','Jeg har ingen kvittering']]},
 {id:'skilt',t:'Kunne man se skiltene?',o:[['ok','Ja, tydeligt, også hvad afgiften kostede'],['daarlig','Nej, de var svære at se eller manglede prisen'],['vi','Lagde ikke mærke til dem']]},
 {id:'seddel',t:'Står der tid, sted, nummerplade, betalingsfrist og hvor man klager?',o:[['ja','Ja, det hele'],['nej','Nej, noget mangler'],['vi','Har ikke tjekket']]},
@@ -35,10 +35,12 @@ else if(a.hvor==='post'){lvl=Math.max(lvl,2);sel.push('post');why.push('Afgiften
 if(a.skilt==='daarlig'){lvl=Math.max(lvl,2);sel.push('skilt');why.push('Skiltningen skal opfylde faste krav: et skilt med hvidt P på sort bund ved indkørslen og skilte på pladsen med reglerne, afgiftens størrelse og selskabets navn. Er den utydelig, er du ikke bundet af vilkårene. Tag billeder som bevis.')}
 if(a.seddel==='nej'){lvl=Math.max(lvl,2);sel.push('seddel');why.push('Afgiften skal oplyse, hvilket vilkår du har overtrådt, tid og sted, nummerplade, betalingsfrist og hvor du kan klage. Mangler noget, er den ikke udstedt efter reglerne.')}
 if(a.grund==='betalt'&&a.fejl==='ok'){lvl=Math.max(lvl,3);sel.push('betalt');why.push('Du havde betalt og har kvittering. Det er et stærkt argument. Vedlæg kvitteringen eller et skærmbillede fra appen.')}
-if(a.grund==='betalt'&&a.fejl==='taste'){lvl=Math.max(lvl,2);sel.push('taste');why.push('Du betalte, men med en tastefejl. Selskaberne afviser ofte den slags, men mange frafalder afgiften, når du viser, at du betalte for den rigtige tid og plads. Det er værd at prøve.')}
+if(a.grund==='betalt'&&a.fejl==='taste'){sel.push('taste');why.push('Du betalte, men med forkert nummerplade eller kode. Det er ærligt talt et svagt argument. Domstolene har sagt, at det er bilistens risiko, hvis appen bruges forkert. Nogle selskaber annullerer alligevel af god vilje, men regn ikke med det.')}
 if(a.grund==='till'){lvl=Math.max(lvl,2);sel.push('till');why.push('Du havde tilladelse. Vedlæg kopi af tilladelsen og et billede af, hvor den lå i bilen.')}
-if(a.grund==='skive'){sel.push('skive');why.push('Ved p-skive skal den være stillet til det nærmeste hele eller halve kvarter efter ankomst og ligge synligt. Har du et billede af den, så vedlæg det.')}
-if(a.grund==='tid'){sel.push('tid');why.push('Ved overskredet tid står det svagere, medmindre skiltningen var utydelig, eller selskabet har regnet tiden forkert.')}
+if(a.grund==='skive'){sel.push('skive');why.push('Lå der en rigtig p-skive, stillet efter ankomsttiden, er det værd at klage, især med et billede. En håndskrevet seddel tæller ikke, det har landsretten afgjort.')}
+if(a.grund==='gaest'){lvl=Math.max(lvl,2);sel.push('gaest');why.push('Står der ikke på skiltet, hvor lang tid man har til at hente gæstekort, har man efter landsrettens praksis rimelig tid til det.')}
+if(a.grund==='flere'){lvl=Math.max(lvl,2);sel.push('flere');why.push('Flere afgifter for én sammenhængende parkering kan være urimeligt, fx når bilen holdt fra aften til morgen. Det har landsretten givet en bilist medhold i.')}
+if(a.grund==='tid'){sel.push('tid');why.push('Overskredet tid er svært at vinde på, medmindre skiltningen var utydelig, eller selskabet har regnet tiden forkert.')}
 if(a.hvor==='vi'||a.skilt==='vi'||a.seddel==='vi')why.push('Du svarede "ved ikke" på et spørgsmål. Kig på afgiften og skiltene igen. Det kan give dig et stærkere argument.')
 if(a.klaget==='afslag'||a.klaget==='intet')why.push('Du har allerede klaget til selskabet. Næste skridt er Parkeringsklagenævnet. Gebyret er 175 kr, og du får det tilbage, hvis du får medhold. Klagen til nævnet er med i pakken.')}
 var lab={'-1':'Det dækker vi ikke',1:'Svag sag',2:'Værd at klage',3:'Stærk sag'}[lvl];
