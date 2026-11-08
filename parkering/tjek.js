@@ -2,14 +2,14 @@
 function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 var A={};
 var Q=[
-{id:'hvem',t:'Hvem har givet dig afgiften?',o:[['priv','Et privat parkeringsselskab (fx Q-Park, Apcoa, Gardian, ParkZone, Europark)'],['kom','Kommunen (parkeringsafgift)'],['pol','Politiet (parkeringsbøde)']],h:'Står øverst på sedlen eller brevet.'},
-{id:'hvor',t:'Hvordan fik du afgiften?',o:[['bil','Den sad på bilen, eller en vagt gav mig den'],['post','Den kom bagefter med posten, e-Boks, sms eller mail'],['vi','Ved ikke']],h:'Mange pladser med kamera (nummerpladescanning) sender afgiften bagefter.'},
-{id:'dato',t:'Hvornår fik du afgiften?',d:1,h:'Datoen for parkeringen.'},
-{id:'grund',t:'Hvad skriver selskabet, at du har gjort forkert?',o:[['betalt','Ikke betalt, men jeg havde betalt (automat eller app)'],['skive','Manglende eller forkert p-skive'],['tid','Overskredet tid'],['till','Manglende tilladelse, men jeg havde en'],['andet','Noget andet']]},
+{id:'hvor',t:'Hvordan fik du den?',o:[['post','Den kom bagefter, med posten, i e-Boks eller på mail'],['bil','Den sad på bilen, eller en vagt gav mig den'],['vi','Kan ikke huske det']]},
+{id:'hvem',t:'Hvem er den fra?',o:[['priv','Et privat firma, fx Q-Park, Apcoa, Gardian eller ParkZone'],['kom','Kommunen'],['pol','Politiet']]},
+{id:'dato',t:'Hvilken dato parkerede du?',d:1},
+{id:'grund',t:'Hvad siger de, du har gjort?',o:[['betalt','Ikke betalt, men det havde jeg'],['skive','Manglende eller forkert p-skive'],['tid','Overskredet tid'],['till','Ingen tilladelse, men jeg havde en'],['andet','Noget andet']]},
 {id:'fejl',t:'Hvordan havde du betalt?',if:function(a){return a.grund==='betalt'},o:[['ok','Korrekt, og jeg har kvittering'],['taste','Jeg tastede forkert nummerplade eller zone'],['ingen','Jeg har ingen kvittering']]},
-{id:'skilt',t:'Hvordan var skiltningen på pladsen?',o:[['ok','Tydelig: P-skilt ved indkørslen og skilte med regler og afgiftens størrelse'],['daarlig','Utydelig, skjult eller manglede afgiftens størrelse'],['vi','Lagde ikke mærke til det']],h:'Tag gerne billeder af skiltene nu, hvis du kan komme forbi.'},
-{id:'seddel',t:'Står alt dette på afgiften?',o:[['ja','Ja, det hele står der'],['nej','Nej, noget mangler'],['vi','Ved ikke']],h:'Hvilket vilkår du har overtrådt, tid og sted, nummerplade, betalingsfrist og hvor du kan klage.'},
-{id:'klaget',t:'Har du allerede klaget til selskabet?',o:[['nej','Nej, ikke endnu'],['afslag','Ja, og de har sagt nej'],['intet','Ja, men de har ikke svaret i over 3 måneder']]}
+{id:'skilt',t:'Kunne man se skiltene?',o:[['ok','Ja, tydeligt, også hvad afgiften kostede'],['daarlig','Nej, de var svære at se eller manglede prisen'],['vi','Lagde ikke mærke til dem']]},
+{id:'seddel',t:'Står der tid, sted, nummerplade, betalingsfrist og hvor man klager?',o:[['ja','Ja, det hele'],['nej','Nej, noget mangler'],['vi','Har ikke tjekket']]},
+{id:'klaget',t:'Har du klaget til dem?',o:[['nej','Ikke endnu'],['afslag','Ja, de sagde nej'],['intet','Ja, men intet svar i 3 måneder']]}
 ];
 var i=0,W=document.getElementById('wiz'),P=document.getElementById('prog'),R=document.getElementById('res');
 function vis(){return Q.filter(function(q){return !q.if||q.if(A)})}
@@ -44,7 +44,7 @@ if(a.klaget==='afslag'||a.klaget==='intet')why.push('Du har allerede klaget til 
 var lab={'-1':'Det dækker vi ikke',1:'Svag sag',2:'Værd at klage',3:'Stærk sag'}[lvl];
 var out='<div class="verdict">'+(lvl>0?'<div class="meter l'+lvl+'"><i></i><i></i><i></i></div>':'')+'<span class="v">'+lab+'</span></div>';
 out+='<ul class="list">'+why.map(function(w){return '<li>'+w+'</li>'}).join('')+'</ul>';
-if(lvl>=2)out+='<div class="row"><a class="btn" href="#pris">Få din færdige klage for 99 kr</a></div><p class="small">Pengene tilbage, hvis selskabet fastholder afgiften.</p>';
+if(lvl>=2)out+='<div class="row"><a class="btn" href="#pris">Få klagen for 99 kr</a></div><p class="small">Pengene tilbage, hvis selskabet fastholder afgiften.</p>';
 else if(lvl===1)out+='<p class="small">Ud fra dine svar ser sagen svag ud, og vi anbefaler ikke, at du køber klagen. Har du billeder eller andet, der viser, at afgiften er forkert, kan det ændre billedet.</p>';
 out+='<p class="small">En vejledende vurdering ud fra reglerne i kontrolafgiftsbekendtgørelsen. <button class="back" type="button" id="again">Tag tjekket igen</button></p>';
 R.className='result '+(lvl>=2?'good':lvl<0?'bad':'');R.innerHTML=out;R.hidden=false;W.hidden=true;P.hidden=true;
